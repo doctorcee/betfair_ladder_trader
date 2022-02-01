@@ -3,11 +3,9 @@
 This application can be used to monitor and place bets on Betfair markets via the Betfair API-NG. It has been developed using the open source development version of Qt Creator 
 (version 5.0.1) based on Qt 5.15.2.
 
-### Disclaimer
-
-Users make use of this source code at their own risk. The application is capable of placing REAL bets using the logged in users account funds and should be used with 
-caution. The default operation mode of this software is with one click betting disabled for ALL of the available bet placement interfaces. The author takes no responsibility 
-for any losses (financial or otherwise) incurred by any users of this application. 
+***Because this application is capable of placing REAL bets using the logged in users account funds, the default operation mode at start disables
+bet placement functionality for ALL of the available bet placement interfaces. Users will need to manually enable the desired betting interfaces 
+via the "Program Settings" dialog (accessed from the "Settings" menu).*** 
 
 ### Build Requirements
 
@@ -38,3 +36,4 @@ Information about SSL certificates and how to generate them can be found [here](
 * Current session Keep-Alive message are NOT sent.
 * Generic event and market browsing is NOT implemented (fixed list of market types for specific event type IDs only).
 * Hard coded limit of 4 price ladders.
+* No support for LINE or ASIAN_HANDICAP betting type markets.
