@@ -1,3 +1,4 @@
+
 ## Qt Betfair ladder trading application
 
 This application can be used to monitor and place bets on Betfair markets via the Betfair API-NG. It has been developed using the open source development version of Qt Creator 
@@ -19,7 +20,7 @@ or mobile apps.***
 - [Demonstration Videos](#demonstration-videos)
 
 
-### Build Requirements
+## Build Requirements
 
 This application has been developed with the open source development version of Qt Creator which will need to be installed on your system.
 Further details about open source development with Qt and instructions for dowloading and installing Qt Creator can be found [here](https://www.qt.io/download-open-source).
@@ -28,7 +29,7 @@ This project has been developed on Ubuntu Linux (LTS version 20.04) but Qt Creat
 Once Qt Creator is installed, the project source code can be imported via the .pro file. 
 
 
-### User Requirements
+## User Requirements
 
 Users will need to have an active Betfair account and access to the Betfair API. This application makes use of the non-interactive login mechanism 
 (described [here](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Non-Interactive+%28bot%29+login)) which requires an application key 
@@ -39,7 +40,7 @@ More information about application keys can be found [here](https://docs.develop
 Information about SSL certificates and how to generate them can be found [here](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Non-Interactive+%28bot%29+login#NonInteractive(bot)login-CreatingaSelfSignedCertificate).
 
 
-### License
+## License
 
 Distributed under the MIT License. See [LICENSE](https://github.com/doctorcee/betfair_ladder_trader/blob/main/LICENSE) for more information.
 
@@ -49,19 +50,19 @@ Distributed under the MIT License. See [LICENSE](https://github.com/doctorcee/be
 What follows is a very rough overview of how to use the application. Usage is **STRONGLY DISCOURAGED** unless you are an exprienced betting exchange user who is already 
 familiar with betting terminology and using ladder based trading interfaces.
 
-#### Stakes
+### Stake selection
 
 Stake can be selected to be £2, £4, £8, £16, £32, £64, £128, or £256. The stake that will be used is highlighted in **RED**. All stakes are set to minimum (£2) on program startup.
 
-#### Grid View
+### Grid View
 
 Left clicking on the price grid will place a back or a lay at the price displayed (plus the optional tick offset if selected) at the stake selected in the stake ladder. 
 
 If the price is a lay price (pink), the bet placed is a lay bet. If the price is a back price (blue), the bet placed is a back bet.
 
-#### Ladder View
+### Ladder View
 
-##### Ladder Bet Placement
+#### Ladder Bet Placement
 
 To place a back bet on a selection (at selected stake) at a particular price, click in the appropriate white grid box to the right of the blue coloured column. If the bet is 
 unmatched, the stake will appear in the white grid box just clicked. Values in the blue column grids display available money in the market looking to back the runner at that price.
@@ -69,13 +70,13 @@ unmatched, the stake will appear in the white grid box just clicked. Values in t
 To place a lay bet on a selection (at selected stake) at a particular price, click in the appropriate white grid box to the left of the pink coloured column. If the bet is 
 unmatched, the stake will appear in the white grid box just clicked. Values in the pink column grids display available money in the market looking to lay the runner at that price.
 
-##### Ladder Bet Cancellation
+#### Ladder Bet Cancellation
 
 Unmatched bets will be displayed in the white ladder columns. To cancel unmatched bets at a specific price, hold down the CONTROL key on the keyboard and then left click on the price. 
 To cancel all unmatched bets on a particular side (back or lay) click the "Cancel" button at the top of the appropriate ladder column.
 
 
-#### Inplay Grid View
+### Inplay Grid View
 
 Bets will only be placed if the market is currently inplay. Right clicking on any price grid in a row will place a **LAY** bet on that runner at that price (with optional tick 
 offset applied if it is selected). Clicking on the "LAY ALL" buttons at the top of a price column will submit **LAY** bets on **ALL** selections at the price shown on the column
@@ -84,7 +85,7 @@ offset applied if it is selected). Clicking on the "LAY ALL" buttons at the top 
 To place a back bet on a selection, hold down the CTRL key on the keyboard and left click at the price. The option to back all runners at a selected price is not supported.
 
 
-#### Current Limitations
+## Current Limitations
 
 * Only uses API-NG (not the streaming API)
 * Only capable of viewing one market at a time.
