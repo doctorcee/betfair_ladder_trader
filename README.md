@@ -50,13 +50,14 @@ Distributed under the MIT License. See [LICENSE](https://github.com/doctorcee/be
 * No capability of placing bets for amounts lower than the minimum bet (popular commercial Betfair trading software is capable of this - this application is not).
 * No logging of market data.
 * No ladder bet drag and drop functionality (place/cancel only).
-* Current session Keep-Alive message are NOT sent.
+* Current session Keep-Alive message are **NOT** sent.
 * Generic event and market browsing is NOT implemented (fixed list of market types for specific event type IDs only).
 * Hard coded limit of 4 price ladders.
 * No support for LINE or ASIAN_HANDICAP betting type markets.
 * No facility to bet at Betfair SP.
-* Customised betting stakes are not supported. Stakes of £2,£4,£8,£16,£32,£64,£128,£256 are the only options available currently.
-* Lay bet stakes represent the amount that would be **won** and not the actual liability if the bet loses.
+* Hard coded stakes of £2, £4, £8, £16, £32, £64, £128, £256 are current stakes available (does not apply to hedged positions)
+* Hedging only applies to the **SELECTION**. No full market greening up option yet.
+* Lay bet stakes represent the amount that would be ***WON*** and ***NOT*** the actual liability if the bet loses.
 
 
 
