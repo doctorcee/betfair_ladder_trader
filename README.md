@@ -4,7 +4,7 @@ This application can be used to monitor and place bets on Betfair markets via th
 (version 5.0.1) based on Qt 5.15.2.
 
 Please be aware that this application is capable of placing **real** bets with the account funds of the logged in user. As a consequence, **all** of the available 
-bet placement interfaces are disabled at startup. 
+bet placement interfaces are disabled at startup. In addition, the default betting stake is set to the minimum which is £2.
 Users will need to manually enable the desired betting interfaces via the "Program Settings" dialog (accessed from the "Settings" menu).
 
 #### Table of Contents
@@ -55,6 +55,8 @@ Distributed under the MIT License. See [LICENSE](https://github.com/doctorcee/be
 * Hard coded limit of 4 price ladders.
 * No support for LINE or ASIAN_HANDICAP betting type markets.
 * No facility to bet at Betfair SP.
+* Customised betting stakes are not supported. Stakes of £2,£4,£8,£16,£32,£64,£128,£256 are the only options available currently.
+* Lay bet stakes represent the amount that would be **won** and not the actual liability if the bet loses.
 
 
 
