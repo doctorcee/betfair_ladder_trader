@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TEventSelectionDlg</class>
+ <widget class="QDialog" name="TEventSelectionDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>540</width>
+    <height>660</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>540</width>
+    <height>660</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Ubuntu</family>
+    <pointsize>8</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Event Selection</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="2,1,4">
+   <item>
+    <widget class="QGroupBox" name="gbHorses">
+     <property name="font">
+      <font>
+       <family>Ubuntu</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QGroupBox#gbHorses {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbHorses::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+     </property>
+     <property name="title">
+      <string>Horse Racing </string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QPushButton" name="btnTodaysUKHorseWinMarkets">
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Today's UK Horse Racing Win Markets</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnTodaysUKIREHorseWinMarkets">
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Today's UK + IRE Horse Racing Win Markets</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="gbCustomHorses">
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox#gbCustomHorses {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbCustomHorses::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+        </property>
+        <property name="title">
+         <string>Custom Selection (by country and market type)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,1,1,1">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,5">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> Select the next </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbHorseMarketCount">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>50</number>
+             </property>
+             <property name="value">
+              <number>25</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> horse racing markets from the following countries </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,1,1,1,1">
+           <item>
+            <widget class="QCheckBox" name="cbSelectUKHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> UK</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectIREHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> IRE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectUSAHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> USA</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectFRAHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> FRA</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectAUSHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> AUS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectRSAHorses">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> RSA</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,1,6">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string> with the following market types </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectHorsesWINType">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>WIN</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbSelectHorsesPLACEType">
+             <property name="font">
+              <font>
+               <family>Ubuntu</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>PLACE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnNextXHorsesByCountry">
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Load Horse Markets</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbGreyhounds">
+     <property name="styleSheet">
+      <string notr="true">QGroupBox#gbGreyhounds {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbGreyhounds::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+     </property>
+     <property name="title">
+      <string>Greyhound Racing</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,5">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string> Select the next </string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="sbDogsMarketCount">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+          <property name="value">
+           <number>25</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string> UK greyhound races with the following market types</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1,1,1,2">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbSelectDogsPLACEType">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>PLACE</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbSelectDogsWINType">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>WIN</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbSelectDogsFCType">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>FORECAST</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadDogMarkets">
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Load Greyhound Markets</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbFootball">
+     <property name="font">
+      <font>
+       <family>Ubuntu</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QGroupBox#gbFootball {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbFootball::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+     </property>
+     <property name="title">
+      <string>Football</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="2,1">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="gbFootballComps">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox#gbFootballComps {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbFootballComps::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+          </property>
+          <property name="title">
+           <string>Select Competitions/Leagues</string>
+          </property>
+          <widget class="QCheckBox" name="chkPortSegunda">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>200</y>
+             <width>150</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>PORTUGUESE SEGUNDA</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkPortPrem">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>180</y>
+             <width>150</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>PORTUGUESE PRIMEIRA</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEngFACup">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>100</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ENGLISH FA CUP</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkItalySerieB">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>120</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ITALY SERIE B</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEngLeague2">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>80</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ENGLISH LEAGUE 2</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEngPrem">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ENGLISH PREMIER</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkGermanBundesliga1">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>20</y>
+             <width>150</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>GERMAN BUNDESLIGA 1</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkItalySerieA">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>100</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ITALY SERIE A</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEngLeague1">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>60</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ENGLISH LEAGUE 1</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEngChamp">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>40</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ENG CHAMPIONSHIP</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkFrenchLigue1">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>140</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>FRENCH LIGUE 1</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkSpanishSegunda">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>80</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>SPANISH SEGUNDA</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkEuropaLeague">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>160</y>
+             <width>160</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>UEFA EUROPA LEAGUE</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkFrenchLigue2">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>160</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>FRENCH LIGUE 2</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkGermanBundesliga2">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>40</y>
+             <width>150</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>GERMAN BUNDESLIGA 2</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkChampionsLeague">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>140</y>
+             <width>160</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>UEFA CHAMPIONS LEAGUE</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkSpanishLaLiga">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>60</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>SPANISH LA LIGA</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbFootballMarketTypes">
+          <property name="font">
+           <font>
+            <family>Ubuntu</family>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox#gbFootballMarketTypes {
+     border: 1px solid gray;
+     margin-top: 0.5em;
+}
+QGroupBox#gbFootballMarketTypes::title { 
+     subcontrol-origin: margin;
+     left: 10px;
+     padding: 0 3px 0 3px;
+ }</string>
+          </property>
+          <property name="title">
+           <string>Select Market Types</string>
+          </property>
+          <widget class="QCheckBox" name="chkOver5_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>180</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 5.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkOver2_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>120</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 2.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkOver4_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>160</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 4.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkHTFT">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>40</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>HALF TIME/FULL TIME</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkMatchOdds">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>MATCH ODDS</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkOver0_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>80</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 0.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkOver1_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>100</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 1.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkOver3_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>140</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>OVER/UNDER 3.5</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="chkCorrectScore">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>60</y>
+             <width>140</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Ubuntu</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>CORRECT SCORE</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadCustomFootballMarkets">
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Load Selected Markets</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

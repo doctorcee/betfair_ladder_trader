@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="chart_icon1.png">images/chart.png</file>
+    </qresource>
+</RCC>
