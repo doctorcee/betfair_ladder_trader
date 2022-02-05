@@ -12,13 +12,18 @@ Users will need to manually enable the desired betting interfaces via the "Progr
 or mobile apps.***
 
 #### Table of Contents
+- [License](#license)
 - [Build Requirements](#build-requirements)
 - [User Requirements](#user-requirements)
-- [License](#license)
 - [Usage Instructions](#usage-instructions)
 - [Current Limitations](#current-limitations)
 - [Demonstration Videos](#demonstration-videos)
 
+
+## License
+
+Distributed under the MIT License. Please take the time to read the details [here](https://github.com/doctorcee/betfair_ladder_trader/blob/main/LICENSE) for more 
+information and before making use of the project.
 
 ## Build Requirements
 
@@ -38,11 +43,6 @@ and SSL certificate files.
 More information about application keys can be found [here](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Application+Keys).
 
 Information about SSL certificates and how to generate them can be found [here](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Non-Interactive+%28bot%29+login#NonInteractive(bot)login-CreatingaSelfSignedCertificate).
-
-
-## License
-
-Distributed under the MIT License. See [LICENSE](https://github.com/doctorcee/betfair_ladder_trader/blob/main/LICENSE) for more information.
 
 
 ## Usage Instructions
