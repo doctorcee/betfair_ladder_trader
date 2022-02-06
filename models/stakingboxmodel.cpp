@@ -1,6 +1,7 @@
 #include "stakingboxmodel.h"
 #include <QFont>
 #include <QBrush>
+#include "betfair/betfair_utils.h"
 
 
 //=================================================================
@@ -11,8 +12,8 @@ StakingBoxModel::StakingBoxModel(QObject *parent,
       m_row_count(1),
       m_col_count(num_stakes),
       m_selected_column_index(0),
-      m_base_stake(2),
-      m_selected_stake(2),
+      m_base_stake(betfair::utils::min_betting_stake),
+      m_selected_stake(m_base_stake),
       m_display_theme(disptheme)
 {
 

@@ -48,7 +48,7 @@ namespace utils {
     static const QColor midgrey1(QColor(0x77,0x77,0x77));
     static const QColor veryLightGrey1(QColor(0xee,0xee,0xee));
     static const QColor susp(QColor(0xff,0x92,0x33));
-    static const double min_betting_stake = 2.0;
+    static const double min_betting_stake = 1.0;
 
     static const QString event_type_horse_racing("7");
     static const QString event_type_dog_racing("4339");
