@@ -122,12 +122,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_auto_offset_bet_placement_ticks(0),
     m_log_gui_update_times_to_file(false),
     m_software_version_num("1.0.1"),
-    m_ladder_stake1(2.0),
-    m_ladder_stake2(2.0),
-    m_ladder_stake3(2.0),
-    m_ladder_stake4(2.0),
-    m_gridview_stake(2.0),
-    m_inplay_gridview_stake(2.0),
+    m_ladder_stake1(betfair::utils::min_betting_stake),
+    m_ladder_stake2(betfair::utils::min_betting_stake),
+    m_ladder_stake3(betfair::utils::min_betting_stake),
+    m_ladder_stake4(betfair::utils::min_betting_stake),
+    m_gridview_stake(betfair::utils::min_betting_stake),
+    m_inplay_gridview_stake(betfair::utils::min_betting_stake),
     m_inplay_flash_flag(false),
     m_gridview_betting_enabled(false),
     m_ladderview_betting_enabled(false),
@@ -142,6 +142,13 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         QDir().mkpath(m_images_path);
     }
+
+    my_ladder_1_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
+    my_ladder_2_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
+    my_ladder_3_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
+    my_ladder_4_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
+    my_gridview_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
+    my_inplay_gridview_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
 
     QFileInfo configinfo(configfile);
     if (configinfo.exists())

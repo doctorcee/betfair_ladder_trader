@@ -52,7 +52,7 @@ familiar with betting terminology and using ladder based trading interfaces.
 
 ### Stake selection
 
-Stake can be selected to be £2, £4, £8, £16, £32, £64, £128, or £256. The stake that will be used is highlighted in **RED**. All stakes are set to minimum (£2) on program startup.
+Stake can be selected to be £1, £2, £4, £8, £16, £32, £64, or £128. The stake that will be used is highlighted in **RED**. All stakes are set to minimum (£2) on program startup.
 
 ### Grid View
 
