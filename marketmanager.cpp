@@ -53,9 +53,9 @@ MarketManager::MarketManager(betfair::TBetfairMarket& mkt)
       m_key_file(""),
       m_app_key(""),
       m_session_token(""),
-      m_error_string(""),
+      m_error_string(""),      
       m_log_file(""),
-      m_error_file(""),
+      m_error_file(""),      
       m_account_balance(-1.0),
       m_b_logged_in(false),
       m_log_responses_to_file(true)
@@ -421,7 +421,7 @@ void MarketManager::layFieldAt(const double& odds,
                 v_selection_ids.push_back(sel_id);
             }
         }
-        placeBets(market_id, v_selection_ids, odds, stake, true, b_persist_after_market_inplay);
+        //placeBets(market_id, v_selection_ids, odds, stake, true, b_persist_after_market_inplay);
     }
 }
 
@@ -550,6 +550,50 @@ void MarketManager::placeBets(const QString& market_id,
         request.setRawHeader(QByteArray("Connection"),QByteArray("keep-alive"));
         request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
 
+
+        QJsonObject order_info;
+        order_info.insert("marketId",market_id);
+        QJsonArray instructions;
+        for (auto bet : bets)
+        {
+            // Create orders now from bet instruction array.
+            if (bet.market_id == market_id)
+            {
+                QJsonObject new_bet;
+                new_bet.insert("selectionId",static_cast<qint64>(bet.selection));
+                QString side = bet.b_lay_type ? "LAY" : "BACK";
+                new_bet.insert("side",side);
+                new_bet.insert("orderType","LIMIT");
+                if (bet.customer_ref_string.isEmpty() == false)
+                {
+                    new_bet.insert("customerOrderRef",bet.customer_ref_string);
+                }
+
+                QJsonObject limit_order;
+                limit_order.insert("size",bet.stake);
+                limit_order.insert("price",bet.odds);
+                QString pers = bet.b_persistence_flag ? "PERSIST" : "LAPSE";
+                limit_order.insert("persistenceType",pers);
+
+
+                new_bet.insert("limitOrder",limit_order);
+
+                instructions.append(new_bet);
+            }
+            else
+            {
+                // error - individual bet market ID does not match the input - we should
+                // log this error and ignore the bet.
+            }
+        }
+        order_info.insert("instructions",instructions);
+        if (strategy_reference_string.isEmpty() == false)
+        {
+            order_info.insert("customerStrategyRef",strategy_reference_string);
+        }
+
+
+        /*
         QString qpayload("{\"marketId\": \"");
         qpayload.append(market_id);
         qpayload.append(QString("\",\"instructions\":["));
@@ -594,59 +638,23 @@ void MarketManager::placeBets(const QString& market_id,
         qpayload.append(QString("}"));
         std::string bytes = qpayload.toStdString();
         //qDebug() << qpayload;
-        QByteArray payload(bytes.c_str(),bytes.length());
+        */
 
-        logMessage("PLACE BETS Request : " + qpayload);
-        logAPIMsg("----->>>>> placeOrders REQUEST send.");
+        QJsonDocument doc(order_info);
+
+        //QByteArray payload(bytes.c_str(),bytes.length());
+
+        QByteArray payload = doc.toJson();
         m_netmanager->post(request,payload);
+
+
+        logMessage("PLACE BETS Request : " + QString::fromUtf8(payload));
+        logAPIMsg("----->>>>> placeOrders REQUEST send.");
+
     }
 
 }
 
-//====================================================================
-void MarketManager::placeBets(const QString& market_id,
-                              const std::vector<std::int64_t>& selections,
-                              const double& odds,
-                              const double& stake,
-                              bool b_lay_type_bet,
-                              bool b_persist_after_market_inplay)
-{
-    // Request
-    QString url = "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/";
-    QNetworkRequest request;
-    request.setSslConfiguration(m_ssl_config);
-    request.setUrl(url);
-    request.setRawHeader(QByteArray("X-Application"),QByteArray(m_app_key.toUtf8()));
-    request.setRawHeader(QByteArray("X-Authentication"),QByteArray(m_session_token.toUtf8()));
-    request.setRawHeader(QByteArray("accept"),QByteArray("application/json"));
-    request.setRawHeader(QByteArray("Connection"),QByteArray("keep-alive"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
-
-    QString qpayload("{\"marketId\": \"");
-    QString str_odds = QString::number(odds,'f' ,2);
-    QString str_stake = QString::number(stake,'f',2);
-    QString type = b_lay_type_bet ? "LAY" : "BACK";
-    QString pers = b_persist_after_market_inplay ? "PERSIST" : "LAPSE";
-    qpayload.append(market_id);
-    qpayload.append(QString("\",\"instructions\":["));
-    int i_ct = 0;
-    for (const std::int64_t& i : selections)
-    {
-        QString cm = (i_ct > 0) ? "," : "";
-        QString pi = "{\"selectionId\":\"" + QString::number(i) + "\",\"side\":\"" + type + "\",\"orderType\":\"LIMIT\",\"limitOrder\":";
-        QString lo = "{\"size\":\"" + str_stake + "\",\"price\":\"" + str_odds + "\",\"persistenceType\":\"" + pers + "\"}}";
-        qpayload.append(cm + pi + lo);
-        ++i_ct;
-    }
-    qpayload.append(QString("]}"));
-    std::string bytes = qpayload.toStdString();
-    //qDebug() << qpayload;
-    QByteArray payload(bytes.c_str(),bytes.length());
-
-    logMessage("PLACE BETS Request : " + qpayload);
-    logAPIMsg("----->>>>> placeOrders REQUEST send.");
-    m_netmanager->post(request,payload);
-}
 
 //====================================================================
 void MarketManager::getMarketBook(const QString& market_id)

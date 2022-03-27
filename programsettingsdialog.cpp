@@ -20,6 +20,7 @@ ProgramSettingsDialog::ProgramSettingsDialog(QWidget *parent) :
     m_ladder_hist_interval_hi(120),
     m_ladder_histogram_colour_array{betfair::utils::pbar3,betfair::utils::pbar1,betfair::utils::pbar2},
     m_unconfirmed_histogram_colour_array{betfair::utils::pbar3,betfair::utils::pbar1,betfair::utils::pbar2},
+    m_customer_strategy_ref(""),
     m_place_bets_with_persistence(false),
     m_gridbet_enabled(false),
     m_ladderbet_enabled(false),
@@ -88,6 +89,10 @@ void ProgramSettingsDialog::refresh()
         ui->sbAutoPlaceOffsetBet->setValue(1);
         ui->chkAutoPlaceOffsetBet->setChecked(false);
     }
+    if (m_customer_strategy_ref.length() > 0)
+    {
+        ui->leCustomerStratRef->setText(m_customer_strategy_ref);
+    }
 }
 
 //====================================================================
@@ -141,6 +146,30 @@ void ProgramSettingsDialog::onSettingsSaveClicked()
         msgBox.setText("Error - Upper ladder histogram interval must be larger than the lower interval!     \nSettings have not been saved.");
         msgBox.exec();
         return;
+    }
+    if (ui->leCustomerStratRef->text().length() > 0)
+    {
+        QString strat_ref = ui->leCustomerStratRef->text();
+        if (strat_ref.length() <= 12)
+        {
+            m_customer_strategy_ref = strat_ref;
+        }
+        else
+        {
+            // Message box
+            QMessageBox msgBox;
+            msgBox.setText("Error - Customer strategy reference string cannot be more than 12 characters long.");
+            msgBox.exec();
+            return;
+        }
+    }
+    else
+    {
+        // Clear current reference string if not empty
+        if (m_customer_strategy_ref.length() > 0)
+        {
+            m_customer_strategy_ref = "";
+        }
     }
     m_bet_update_index = ui->cbBetsSampleRate->currentIndex();
     if (m_bet_update_index < 0 || m_bet_update_index > 5)

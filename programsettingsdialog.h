@@ -33,6 +33,7 @@ public:
     QColor getLadderHistogramColorUpper() const {return m_ladder_histogram_colour_array[2];}
     std::uint16_t getAutoBetPlacementOffset() const {return m_auto_bet_offset;}
 
+    QString getCustomStrategyRef() const {return m_customer_strategy_ref;}
     void applyDefaultDarkTheme();
 
     void refresh();
@@ -62,6 +63,8 @@ private:
 
     QColor m_ladder_histogram_colour_array[3];
     QColor m_unconfirmed_histogram_colour_array[3];
+
+    QString m_customer_strategy_ref;
 
     bool m_place_bets_with_persistence;
 

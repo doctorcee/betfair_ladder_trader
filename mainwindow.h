@@ -168,6 +168,8 @@ private:
     QTimer* m_selected_market_update_timer;
     QTimer* m_update_bets_timer;
 
+    QString m_bet_strategy_ref;
+
     std::uint32_t m_timer_counter;
     int m_wom_calculation_depth;
     bool m_bet_persistence_flag;
