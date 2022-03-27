@@ -116,6 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     my_inplay_gridview_stake_model(nullptr,8,m_display_theme),
     m_selected_market_update_timer(nullptr),
     m_update_bets_timer(nullptr),
+    m_bet_strategy_ref(""),
     m_timer_counter(0),
     m_wom_calculation_depth(5),
     m_bet_persistence_flag(false),
@@ -893,15 +894,22 @@ void MainWindow::onIPViewClick(const QModelIndex &index)
                                     std::shared_ptr<betfair::TRunner> this_runner = runners[static_cast<std::size_t>(row)];
                                     if (this_runner->isActive())
                                     {
+
+                                        std::vector<betfair::utils::betInstruction> v_bets;
+                                        v_bets.push_back(betfair::utils::betInstruction(this_runner->getID(),m_id,"",laytype,odds,d_stake,m_bet_persistence_flag));
+                                        bf_man.placeBets(m_id,v_bets,m_bet_strategy_ref);
+
                                         // Looks good to go now.
                                         QString runner_name = this_runner->getName();
+
+                                        /*
                                         std::vector<std::int64_t> v_sels;
                                         v_sels.push_back(this_runner->getID());
                                         QString bettype = laytype ? "LAY " : "BACK ";
-                                        bf_man.placeBets(m_id, v_sels, odds, d_stake, laytype, m_bet_persistence_flag);
-
+                                        bf_man.placeBets(m_id, v_sels, odds, d_stake, laytype, m_bet_persistence_flag);                                        
                                         QString line = "Attempting to " + bettype + runner_name + " @ " + QString::number(odds,'f',2) + " for £" + QString::number(d_stake,'f',2) + " (from IP grid view)";
                                         logEvent(line);
+                                        */
                                     }
                                 }
                             }
@@ -1015,11 +1023,8 @@ void MainWindow::ladderViewClicked(LadderViewModel& ladder,
                 {
                     if (bet.stake > 0.0 && bet.odds > 1.0)
                     {
-                        std::vector<std::int64_t> v_sels;
-                        v_sels.push_back(sel_id);
-                        bf_man.placeBets(m_id, v_sels, bet.odds, bet.stake, bet.b_lay_type, m_bet_persistence_flag);
-                        QString type = bet.b_lay_type ? "LAY " : "BACK ";
-                        QString line = "Attempting to " + type + selection->getName() + " @ " + QString::number(bet.odds,'f',2) + " for £" + QString::number(bet.stake,'f',2) + " (Hedge action from ladder view)";
+                        std::vector<betfair::utils::betInstruction> v_bets(1,bet);
+                        bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                     }
                 }
                 logEvent(info);
@@ -1040,9 +1045,9 @@ void MainWindow::ladderViewClicked(LadderViewModel& ladder,
                 {
                     if (stake > 0.0)
                     {
+                        std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(sel_id,m_id,"",true,d_odds,stake,m_bet_persistence_flag));
                         if (m_auto_offset_bet_placement_ticks > 0)
-                        {
-                            std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(sel_id,m_id,"",true,d_odds,stake,m_bet_persistence_flag));
+                        {                            
                             // Get opposing bet now
                             int offset = row - m_auto_offset_bet_placement_ticks;
                             if (offset < 0)
@@ -1057,19 +1062,9 @@ void MainWindow::ladderViewClicked(LadderViewModel& ladder,
                             {
                                 double offset_odds = m_v_odds_tick_vector[static_cast<std::size_t>(offset)].toDouble();
                                 v_bets.push_back(betfair::utils::betInstruction(sel_id,m_id,"",false,offset_odds,stake,m_bet_persistence_flag));
-                            }
-                            bf_man.placeBets(m_id, v_bets, "");
-                            QString line = "Attempting to LAY " + selection->getName() + " @ " + odds + " for £" +  QString::number(stake,'f',2) + " (from ladder view)";
-                            line.append(" with " + QString::number(offset) + " tick opposing automatic offset bet.");
-                            logEvent(line);
-                        }
-                        else
-                        {
-                            std::vector<std::int64_t> v_sels(1,sel_id);
-                            bf_man.placeBets(m_id, v_sels, d_odds, stake, true, m_bet_persistence_flag);
-                            QString line = "Attempting to LAY " + selection->getName() + " @ " + odds + " for £" +  QString::number(stake,'f',2) + " (from ladder view)";
-                            logEvent(line);
-                        }
+                            }                            
+                        }                                              
+                        bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                     }
                 }
             }
@@ -1089,9 +1084,9 @@ void MainWindow::ladderViewClicked(LadderViewModel& ladder,
                 {
                     if (stake > 0.0)
                     {
+                        std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(sel_id,m_id,"",false,d_odds,stake,m_bet_persistence_flag));
                         if (m_auto_offset_bet_placement_ticks > 0)
-                        {
-                            std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(sel_id,m_id,"",false,d_odds,stake,m_bet_persistence_flag));
+                        {                            
                             // Get opposing bet now
                             int offset = row + m_auto_offset_bet_placement_ticks;
                             if (offset < 0)
@@ -1106,19 +1101,9 @@ void MainWindow::ladderViewClicked(LadderViewModel& ladder,
                             {
                                 double offset_odds = m_v_odds_tick_vector[static_cast<std::size_t>(offset)].toDouble();
                                 v_bets.push_back(betfair::utils::betInstruction(sel_id,m_id,"",true,offset_odds,stake,m_bet_persistence_flag));
-                            }
-                            bf_man.placeBets(m_id, v_bets, "");
-                            QString line = "Attempting to BACK " + selection->getName() + " @ " + odds + " for £" + QString::number(stake,'f',2) + " (from ladder view)";;
-                            line.append(" with " + QString::number(offset) + " tick opposing automatic offset bet.");
-                            logEvent(line);
+                            }                           
                         }
-                        else
-                        {
-                            std::vector<std::int64_t> v_sels(1,sel_id);
-                            bf_man.placeBets(m_id, v_sels, d_odds, stake, false, m_bet_persistence_flag);
-                            QString line = "Attempting to BACK " + selection->getName() + " @ " + odds + " for £" + QString::number(stake,'f',2) + " (from ladder view)";;
-                            logEvent(line);
-                        }
+                        bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                     }
                 }
             }
@@ -1243,17 +1228,12 @@ void MainWindow::onGridViewClick(const QModelIndex &index)
                             {
                                 QString runner_name = this_runner->getName();
                                 double d_actual_odds = 0.0;
-                                QString str_odds = "0.0";
-
-                                std::vector<std::int64_t> v_sels;
-                                v_sels.push_back(this_runner->getID());
-
+                                QString str_odds = "0.0";                          
                                 int tick_offset = ui->chkTickOffset->isChecked() ? ui->sbTickOffset->value() : 0;
                                 if (backing_action)
                                 {
                                     std::pair<double,double> bp = this_runner->getOrderedBackPrice(bprice_index);
                                     double d_odds = bp.first;
-
                                     if (d_odds > 1.0)
                                     {
                                         // Available reported odds plus an offset
@@ -1263,9 +1243,8 @@ void MainWindow::onGridViewClick(const QModelIndex &index)
                                             str_odds = mapOddsBySignedOffset(str_odds, tick_offset);
                                         }
                                         d_actual_odds = str_odds.toDouble();
-                                        bf_man.placeBets(m_id, v_sels, d_actual_odds, d_stake, false, m_bet_persistence_flag);
-                                        QString line = "Attempting to BACK " + runner_name + " @ " + str_odds + " for £" + QString::number(d_stake,'f',2) + " (from grid view)";
-                                        logEvent(line);
+                                        std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(this_runner->getID(),m_id,"",false,d_odds,d_stake,m_bet_persistence_flag));
+                                        bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                                     }
                                     else
                                     {
@@ -1285,9 +1264,8 @@ void MainWindow::onGridViewClick(const QModelIndex &index)
                                             str_odds = mapOddsBySignedOffset(str_odds, tick_offset);
                                         }
                                         d_actual_odds = str_odds.toDouble();
-                                        bf_man.placeBets(m_id, v_sels, d_actual_odds, d_stake, true, m_bet_persistence_flag);
-                                        QString line = "Attempting to LAY " + runner_name + " @ " + str_odds + " for £" + QString::number(d_stake,'f',2) + " (from grid view)";
-                                        logEvent(line);
+                                        std::vector<betfair::utils::betInstruction> v_bets(1,betfair::utils::betInstruction(this_runner->getID(),m_id,"",true,d_odds,d_stake,m_bet_persistence_flag));
+                                        bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                                     }
                                     else
                                     {
@@ -1314,11 +1292,9 @@ void MainWindow::onGridViewClick(const QModelIndex &index)
                         {
                             if (bet.stake > 0.0 && bet.odds > 1.0)
                             {
-                                std::vector<std::int64_t> v_sels;
-                                v_sels.push_back(sel_id);
-                                bf_man.placeBets(m_id, v_sels, bet.odds, bet.stake, bet.b_lay_type, m_bet_persistence_flag);
-                                QString type = bet.b_lay_type ? "LAY " : "BACK ";
-                                QString line = "Attempting to " + type + (this_runner->getName()) + " @ " + QString::number(bet.odds,'f',2) + " for £" + QString::number(bet.stake,'f',2) + " (Hedge action from grid view)";
+                                bet.b_persistence_flag = m_bet_persistence_flag;
+                                std::vector<betfair::utils::betInstruction> v_bets(1,bet);
+                                bf_man.placeBets(m_id, v_bets, m_bet_strategy_ref);
                             }
                         }
                         logEvent(info);
@@ -2196,6 +2172,8 @@ void MainWindow::onProgramSettingsChange()
     m_ladder_views_two.setBettingEnabled(m_ladderview_betting_enabled);
     m_ladder_views_three.setBettingEnabled(m_ladderview_betting_enabled);
     m_ladder_views_four.setBettingEnabled(m_ladderview_betting_enabled);
+
+    m_bet_strategy_ref = my_program_settings.getCustomStrategyRef();
 
 
 

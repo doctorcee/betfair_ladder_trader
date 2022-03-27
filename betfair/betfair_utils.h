@@ -56,7 +56,7 @@ namespace utils {
     struct betInstruction {
         std::int64_t selection;
         QString market_id;
-        QString strategy_string;
+        QString customer_ref_string;
         bool b_lay_type;
         bool b_persistence_flag;
         double odds;
@@ -65,7 +65,7 @@ namespace utils {
         betInstruction()
             : selection(0),
               market_id(""),
-              strategy_string(""),
+              customer_ref_string(""),
               b_lay_type(false),
               b_persistence_flag(false),
               odds(0.0),
@@ -73,14 +73,14 @@ namespace utils {
 
         betInstruction(const std::int64_t& sel,
                        const QString& mkid,
-                       const QString& strat_id,
+                       const QString& ref_string,
                        bool lay,
                        const double& price,
                        const double& dstake,
                        bool b_pers_flag = false)
             : selection(sel),
               market_id(mkid),
-              strategy_string(strat_id),
+              customer_ref_string(ref_string),
               b_lay_type(lay),
               b_persistence_flag(b_pers_flag),
               odds(price),

@@ -44,12 +44,7 @@ public:
 
     void cancelBets(const QString& market_id,
                     const std::vector<QString>& v_bets);
-    void placeBets(const QString& market_id,
-                   const std::vector<std::int64_t>& selections,
-                   const double& odds,
-                   const double& stake,
-                   bool b_lay_type_bet,
-                   bool b_persist_after_market_inplay);
+
     void placeBets(const QString& market_id,
                    const std::vector<betfair::utils::betInstruction>& bets,
                    const QString& strategy_reference_string);
