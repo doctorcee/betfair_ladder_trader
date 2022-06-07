@@ -94,12 +94,10 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                 break;
 
 
-            case Qt::DisplayRole:
-            {
-                QString display_val("");                             
-                int num_runners = static_cast<int>(m_bf_market.getNumRunners());
-                if (row < num_runners)
+            case Qt::DisplayRole:           
+                if (row < static_cast<int>(m_bf_market.getNumRunners()))
                 {
+                    QString display_val("");
                     auto runners = m_bf_market.getRunners();
                     const std::size_t runner_index = static_cast<std::size_t>(row);
                     std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
@@ -120,12 +118,14 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                                 display_val.append(" [" + draw + "]");
                             }
                         }
+                        return display_val;
                     }
                     else if (col == gridview::PROFIT)
                     {
                         double profitifwins = this_runner->getProfit();
                         display_val = profitifwins < 0.0 ? "-£" : "£";
                         display_val += QString::number(std::abs(profitifwins),'f',2);
+                        return display_val;
                     }
                     else if (col >= gridview::BACK3 && col <= gridview::BACK1)
                     {
@@ -144,7 +144,8 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                                     display_val = QString::number(bp.first,'f',2) + QString("\n£") + QString::number(bp.second,'f',2);
                                 }
                             }
-                        }                        
+                        }
+                        return display_val;
                     }
                     else if (col >= gridview::LAY1 && col <= gridview::LAY3)
                     {
@@ -161,17 +162,21 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                                 if (bp.first > 0.0)
                                 {
                                     display_val = QString::number(bp.first,'f',2) + QString("\n£") + QString::number(bp.second,'f',2);
-                                }
+                                }                                
                             }
                         }                       
+                        return display_val;
                     }
                     else if (gridview::HEDGE == col)
                     {
-                        display_val = "HEDGE POSITION";
+                        if (b_runner_active)
+                        {
+                            display_val = "HEDGE POSITION";
+                        }
+                        return display_val;
                     }
                 }
-                return display_val;
-            }
+                return QString("");
             case Qt::FontRole:
                 if (col ==  gridview::LAY1 || col == gridview::BACK1 || col == gridview::NAME || col == gridview::PROFIT)
                 {
@@ -180,83 +185,71 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                     return boldFont;
                 }
                 break;
-            case Qt::ForegroundRole:
-                if (col == gridview::NAME)
+            case Qt::ForegroundRole:                
+                if (row < static_cast<int>(m_bf_market.getNumRunners()))
                 {
-                    if (m_display_theme == 1)
+                    auto runners = m_bf_market.getRunners();
+                    const std::size_t runner_index = static_cast<std::size_t>(row);
+                    std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
+                    if (false == this_runner->isActive())
                     {
-                        QBrush t(Qt::black);
-                        return t;
+                        return QBrush(betfair::utils::midgrey1);
                     }
-                }
-                else if (col >= gridview::BACK3 && col <= gridview::LAY3)
-                {
-                    if (m_display_theme == 1)
+                    else
                     {
-                        QBrush t(Qt::black);
-                        return t;
-                    }
-                }
-                else if (col == gridview::PROFIT)
-                {
-                    int num_runners = static_cast<int>(m_bf_market.getNumRunners());
-                    if (row < num_runners)
-                    {
-                        auto runners = m_bf_market.getRunners();
-                        const std::size_t runner_index = static_cast<std::size_t>(row);
-                        std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
-                        bool b_runner_active = this_runner->isActive();
-                        if (b_runner_active)
+                        if (col == gridview::NAME)
+                        {
+                            return QBrush(Qt::black);
+                        }
+                        else if (col >= gridview::BACK3 && col <= gridview::LAY3)
+                        {
+                            return QBrush(Qt::black);
+                        }
+                        else if (col == gridview::PROFIT)
                         {
                             if (this_runner->getProfit() > 0.0)
-                            {                                
+                            {
                                 return (m_display_theme == 0) ? QBrush(betfair::utils::green1) : QBrush(Qt::white);
                             }
                             else if (this_runner->getProfit() < 0.0)
-                            {                             
+                            {
                                 return (m_display_theme == 0) ? QBrush(betfair::utils::redTwo) : QBrush(Qt::white);
                             }
                             else
-                            {                                
+                            {
                                 return (m_display_theme == 0) ? QBrush(Qt::black) : QBrush(Qt::white);
                             }
                         }
                     }
                 }
-                break;
-            case Qt::BackgroundRole:
-                switch (col) {
-                    case gridview::NAME:
-                        return QBrush(Qt::white);
-                    case gridview::PROFIT:
-                        {
-                        int num_runners = static_cast<int>(m_bf_market.getNumRunners());
-                        if (row < num_runners)
-                        {
-                            auto runners = m_bf_market.getRunners();
-                            const std::size_t runner_index = static_cast<std::size_t>(row);
-                            std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
-                            bool b_runner_active = this_runner->isActive();
-                            if (b_runner_active)
+                return QBrush(Qt::transparent);
+            case Qt::BackgroundRole:                
+                if (row < static_cast<int>(m_bf_market.getNumRunners()))
+                {
+                    auto runners = m_bf_market.getRunners();
+                    const std::size_t runner_index = static_cast<std::size_t>(row);
+                    std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
+                    if (false == this_runner->isActive())
+                    {
+                        return QBrush(betfair::utils::veryLightGrey1);
+                    }
+                    switch (col) {
+                        case gridview::NAME:
+                            return QBrush(Qt::white);
+                        case gridview::PROFIT:
+                            if (this_runner->getProfit() > 0.0)
                             {
-                                if (this_runner->getProfit() > 0.0)
-                                {
-                                    return (m_display_theme == 1) ? QBrush(betfair::utils::green1) : QBrush(Qt::white);
-                                }
-                                else if (this_runner->getProfit() < 0.0)
-                                {
-                                    return (m_display_theme == 1) ? QBrush(betfair::utils::redTwo) : QBrush(Qt::white);
-                                }
-                                else
-                                {
-                                    return (m_display_theme == 1) ? QBrush(betfair::utils::midgrey1) : QBrush(Qt::white);
-                                }
+                                return (m_display_theme == 1) ? QBrush(betfair::utils::green1) : QBrush(Qt::white);
                             }
-                        }
-                        }
-                        break;
-                    case gridview::BACK3:
-                        {
+                            else if (this_runner->getProfit() < 0.0)
+                            {
+                                return (m_display_theme == 1) ? QBrush(betfair::utils::redTwo) : QBrush(Qt::white);
+                            }
+                            else
+                            {
+                                return (m_display_theme == 1) ? QBrush(betfair::utils::midgrey1) : QBrush(Qt::white);
+                            }
+                        case gridview::BACK3:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::backThree);
@@ -265,9 +258,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::BACK2:
-                        {
+                        case gridview::BACK2:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::backTwo);
@@ -276,9 +267,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::BACK1:
-                        {
+                        case gridview::BACK1:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::backOne);
@@ -287,9 +276,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::LAY1:
-                        {
+                        case gridview::LAY1:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::layOne);
@@ -298,9 +285,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::LAY2:
-                        {
+                        case gridview::LAY2:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::layTwo);
@@ -309,9 +294,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::LAY3:
-                        {
+                        case gridview::LAY3:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::layThree);
@@ -320,9 +303,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    case gridview::HEDGE:
-                        {
+                        case gridview::HEDGE:
                             if (m_betting_enabled)
                             {
                                 return b_suspended ? QBrush(betfair::utils::susp) : QBrush(betfair::utils::green1);
@@ -331,11 +312,11 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                             {
                                 return QBrush(betfair::utils::midgrey1);
                             }
-                        }
-                    default:
-                        break;
+                        default:
+                            return QBrush(Qt::transparent);
+                    }
                 }
-                break;
+                return QBrush(Qt::transparent);
             case Qt::TextAlignmentRole:
 
                 if (row >= 0 && col >= 0)
