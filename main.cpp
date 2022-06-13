@@ -8,7 +8,6 @@ int main(int argc, char *argv[])
     const QString configfile = "config.json";
     QJsonObject program_config;
 
-    bool file_error = true;
     QFile file(configfile);
     if (file.open(QIODevice::ReadOnly))
     {
@@ -21,7 +20,13 @@ int main(int argc, char *argv[])
             if (jerror.error == QJsonParseError::NoError)
             {
                 program_config = jsonResponse.object();
-                file_error = false;
+                if (program_config.contains("darkTheme"))
+                {
+                    if (program_config.value("darkTheme").isBool())
+                    {
+                        display_theme = (true == program_config.value("darkTheme").toBool()) ? 1 : 0;
+                    }
+                }
             }
         }
         file.close();
@@ -45,7 +50,7 @@ int main(int argc, char *argv[])
     */
 
     QApplication a(argc, argv);
-    MainWindow w(program_config, nullptr);
+    MainWindow w(program_config, display_theme, nullptr);
 
     if (w.darkMode())
     {

@@ -46,6 +46,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(const QJsonObject& json_settings,
+                        const int& display_theme,
                         QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -243,6 +244,7 @@ private:
     void logGUIUpdateMsg(const QString& msg);
     void writeGUIUpdateMsgBufferToFile();
     void saveProgramSettings();
+    void updateProgramSettings();
 
     void setComboBoxIcon(QComboBox* combo,
                          const QString& runnername,

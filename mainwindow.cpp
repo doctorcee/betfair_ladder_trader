@@ -62,12 +62,13 @@ static QString timeToStart(const qint64& secs_to_go)
 
 //====================================================================
 MainWindow::MainWindow(const QJsonObject& json_settings,
+                       const int& display_theme,
                        QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_program_settings_file_path("config.json"),
     m_program_settings(json_settings),
-    m_display_theme(0),
+    m_display_theme(display_theme),
     my_market_vol_chart_wrapper(this,m_display_theme),
     my_vwap_xo_1(this,m_display_theme),
     my_vwap_xo_2(this,m_display_theme),
@@ -137,18 +138,10 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
         QDir().mkpath(m_images_path);
     }
 
-    // Force program settings dialogue to populate its members with data from the JSON config file
+    // Force program settings dialogue to populate its members with data from the JSON config file and
+    // then populate our members accordingly
     my_program_settings.importStartUpJSONSettings();
-
-    /*
-    if (m_program_settings.contains("startUpSettings"))
-    {
-        QJsonObject ss = m_program_settings.value("startUpSettings").toObject();
-        m_gridview_betting_enabled = ss.contains("enableGridViewBetting") && ss.value("enableGridViewBetting").isBool() && ss.value("enableGridViewBetting").toBool();
-        m_ladderview_betting_enabled = ss.contains("enableLadderViewBetting") && ss.value("enableLadderViewBetting").isBool() && ss.value("enableLadderViewBetting").toBool();
-        m_inplayview_betting_enabled = ss.contains("enableIPViewBetting") && ss.value("enableIPViewBetting").isBool() && ss.value("enableIPViewBetting").toBool();
-    }
-    */
+    updateProgramSettings();
 
     ui->setupUi(this);
 
@@ -162,6 +155,7 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     if (m_display_theme == 1)
     {
         my_program_settings.applyDefaultDarkTheme();
+
     }
 
 
@@ -2147,7 +2141,7 @@ void MainWindow::processLogin()
 }
 
 //====================================================================
-void MainWindow::onProgramSettingsChange()
+void MainWindow::updateProgramSettings()
 {
     m_selected_market_update_timer->setInterval(my_program_settings.getDataUpdateRateMillisec());
     m_update_bets_timer->setInterval(my_program_settings.getBetUpdateRateMillisec());
@@ -2195,6 +2189,12 @@ void MainWindow::onProgramSettingsChange()
     }
 
     m_auto_offset_bet_placement_ticks = my_program_settings.getAutoBetPlacementOffset();
+}
+
+//====================================================================
+void MainWindow::onProgramSettingsChange()
+{
+    updateProgramSettings();
 }
 
 //====================================================================
