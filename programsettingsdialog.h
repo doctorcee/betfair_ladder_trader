@@ -2,7 +2,8 @@
 #define PROGRAMSETTINGSDIALOG_H
 
 #include <QDialog>
-#include <map>
+#include <QJsonObject>
+
 
 namespace Ui {
 class ProgramSettingsDialog;
@@ -13,7 +14,8 @@ class ProgramSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ProgramSettingsDialog(QWidget *parent = nullptr);
+    explicit ProgramSettingsDialog(QJsonObject& settings,
+                                   QWidget *parent = nullptr);
     ~ProgramSettingsDialog();
 
     int getWOMCalcDepth() const {return m_wom_calculation_depth;}
@@ -38,6 +40,8 @@ public:
 
     void refresh();
 
+    void importStartUpJSONSettings();
+
 
 public slots:
 
@@ -52,6 +56,7 @@ signals:
 private:
     Ui::ProgramSettingsDialog *ui;
 
+    QJsonObject& m_program_settings;
     int m_wom_calculation_depth;
     int m_bet_update_rate_milliseconds;
     int m_data_update_rate_milliseconds;
@@ -77,6 +82,8 @@ private:
     const int m_preset_sample_rates_millisec[6] = {200,500,1000,2000,5000,10000};
 
     void setColour(const unsigned char index);
+
+
 
 };
 
