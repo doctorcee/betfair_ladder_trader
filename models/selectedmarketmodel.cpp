@@ -220,6 +220,10 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                                 return (m_display_theme == 0) ? QBrush(Qt::black) : QBrush(Qt::white);
                             }
                         }
+                        else if (col == gridview::HEDGE)
+                        {
+                            return QBrush(Qt::black);
+                        }
                     }
                 }
                 return QBrush(Qt::transparent);
