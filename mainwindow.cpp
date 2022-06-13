@@ -23,26 +23,6 @@ static const int betviews_row_height = 18;
 static const QString gui_update_log = QDateTime::currentDateTime().toString("yyyyMMMdd") + "_gui_update_timing_log.txt";
 static const QString betfair_url_base = "https://content-cache.cdnbf.net/feeds_images/Horses/SilkColours/";
 
-/*
-//====================================================================
-static QString scramble(int x, int y, QString target)
-{
-    QString rval = target;
-    for (int i = 0; i < rval.length(); ++i)
-    {
-        char csz = rval.at(i).toLatin1();
-        if (i%x == 0)
-        {
-            for (int j = 0; j < y; ++j)
-            {
-                csz++;
-            }
-        }
-        rval.replace(i,1,QChar(csz));
-    }
-    return rval;
-}
-*/
 
 //====================================================================
 static qint64 secondsUntil(const QDateTime& target)
@@ -81,10 +61,14 @@ static QString timeToStart(const qint64& secs_to_go)
 
 
 //====================================================================
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(const QJsonObject& json_settings,
+                       const int& display_theme,
+                       QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_display_theme(0),
+    m_program_settings_file_path("config.json"),
+    m_program_settings(json_settings),
+    m_display_theme(display_theme),
     my_market_vol_chart_wrapper(this,m_display_theme),
     my_vwap_xo_1(this,m_display_theme),
     my_vwap_xo_2(this,m_display_theme),
@@ -94,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     my_ladder_util_layouts{nullptr,nullptr,nullptr,nullptr},
     my_runner_charts(m_market,m_display_theme),
     my_runner_analysis_chart(m_market,m_display_theme),
-    my_program_settings(),
+    my_program_settings(m_program_settings,nullptr),
     m_price_offset_indices(betfair::utils::generateOddsMap()),
     m_index_offset_by_price(betfair::utils::generateOffsetMap(m_price_offset_indices)),
     m_v_odds_tick_vector(betfair::utils::generateOddsTickVector()),
@@ -134,15 +118,32 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ladderview_betting_enabled(false),
     m_inplayview_betting_enabled(false)
 {
-    ui->setupUi(this);
-    // Read info in from config file (if there is one - if not maintain defaults)
-    const QString configfile = "config.dat";
-    QString al = "";
-
+    if (m_program_settings.contains("darkTheme"))
+    {
+        if (m_program_settings.value("darkTheme").isBool())
+        {
+            m_display_theme = (true == m_program_settings.value("darkTheme").toBool()) ? 1 : 0;
+        }
+        else
+        {
+            m_program_settings.insert("darkTheme",false);
+        }
+    }
+    else
+    {
+        m_program_settings.insert("darkTheme",false);
+    }
     if (!QDir(m_images_path).exists())
     {
         QDir().mkpath(m_images_path);
     }
+
+    // Force program settings dialogue to populate its members with data from the JSON config file and
+    // then populate our members accordingly
+    my_program_settings.importStartUpJSONSettings();
+    updateProgramSettings();
+
+    ui->setupUi(this);
 
     my_ladder_1_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
     my_ladder_2_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
@@ -151,28 +152,10 @@ MainWindow::MainWindow(QWidget *parent) :
     my_gridview_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
     my_inplay_gridview_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
 
-    QFileInfo configinfo(configfile);
-    if (configinfo.exists())
-    {
-        TIniFile config_ini(configfile.toStdString());
-        if (config_ini.isValid())
-        {
-            std::string str_error = "error";
-
-            // FOR NOW JUST USE AUTO LOGIN - WE WILL USE OTHER FIELDS FOR GUI CONFIGURATION LATER
-            std::string alfile = config_ini.getValue("general","al",str_error);
-            if (alfile != str_error)
-            {
-                al = QString::fromStdString(alfile);
-            }
-        }
-    }
-
-
-
     if (m_display_theme == 1)
     {
         my_program_settings.applyDefaultDarkTheme();
+
     }
 
 
@@ -693,10 +676,24 @@ QString MainWindow::mapOddsBySignedOffset(const QString& str_odds, int tick_offs
 MainWindow::~MainWindow()
 {
     writeGUIUpdateMsgBufferToFile();
+    saveProgramSettings();
     delete ui;
     QApplication::exit();
 }
 
+//====================================================================
+void MainWindow::saveProgramSettings()
+{
+    QJsonDocument doc(m_program_settings);
+    QString json_string(doc.toJson(QJsonDocument::Indented));
+    QFile file(m_program_settings_file_path);
+    if (file.open(QIODevice::Text | QIODevice::WriteOnly))
+    {
+        QTextStream out(&file);
+        out << json_string << Qt::endl;
+        file.close();
+    }
+}
 
 //====================================================================
 void MainWindow::onLadder1CancelBacksClicked()
@@ -2144,7 +2141,7 @@ void MainWindow::processLogin()
 }
 
 //====================================================================
-void MainWindow::onProgramSettingsChange()
+void MainWindow::updateProgramSettings()
 {
     m_selected_market_update_timer->setInterval(my_program_settings.getDataUpdateRateMillisec());
     m_update_bets_timer->setInterval(my_program_settings.getBetUpdateRateMillisec());
@@ -2192,6 +2189,12 @@ void MainWindow::onProgramSettingsChange()
     }
 
     m_auto_offset_bet_placement_ticks = my_program_settings.getAutoBetPlacementOffset();
+}
+
+//====================================================================
+void MainWindow::onProgramSettingsChange()
+{
+    updateProgramSettings();
 }
 
 //====================================================================

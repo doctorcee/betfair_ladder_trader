@@ -45,7 +45,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(const QJsonObject& json_settings,
+                        const int& display_theme,
+                        QWidget *parent = nullptr);
     ~MainWindow();
 
     bool darkMode() const {return m_display_theme == 1;}
@@ -123,6 +125,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    const QString m_program_settings_file_path;
+    QJsonObject m_program_settings;
     std::uint16_t m_display_theme;
     betfair::TBetfairMarket m_market;
     charting::TMarketVolumeChartWrapper my_market_vol_chart_wrapper;
@@ -239,6 +243,8 @@ private:
 
     void logGUIUpdateMsg(const QString& msg);
     void writeGUIUpdateMsgBufferToFile();
+    void saveProgramSettings();
+    void updateProgramSettings();
 
     void setComboBoxIcon(QComboBox* combo,
                          const QString& runnername,
