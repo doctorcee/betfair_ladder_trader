@@ -108,7 +108,7 @@ public slots:
 
     void onClearEventLogClicked();
 
-    void onIPViewClick(const QModelIndex &index);
+    void onIPViewClick(QModelIndex index);
 
     void onLadder1ShowChartClicked();
     void onLadder2ShowChartClicked();
@@ -171,6 +171,9 @@ private:
 
     QTimer* m_selected_market_update_timer;
     QTimer* m_update_bets_timer;
+
+    int m_bet_update_rate_ms;
+    int m_price_update_rate_ms;
 
     QString m_bet_strategy_ref;
 

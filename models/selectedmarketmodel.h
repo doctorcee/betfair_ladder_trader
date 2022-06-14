@@ -56,6 +56,9 @@ private:
     QString m_image_dir;
     std::uint16_t m_display_theme;
 
+    QColor m_nonrunner_background;
+    QColor m_nonrunner_foreground;
+
     bool m_betting_enabled;
 
 

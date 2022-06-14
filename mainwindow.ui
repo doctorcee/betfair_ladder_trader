@@ -640,7 +640,7 @@ QGroupBox#accountInfoGroupBox::title {
          </font>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tabGridView">
          <property name="accessibleName">
@@ -813,6 +813,9 @@ QGroupBox#accountInfoGroupBox::title {
               <pointsize>7</pointsize>
              </font>
             </property>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>0</number>
+            </attribute>
             <attribute name="verticalHeaderMinimumSectionSize">
              <number>30</number>
             </attribute>

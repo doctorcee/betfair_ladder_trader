@@ -49,6 +49,8 @@ private:
     bool m_lay_mode;
     QString m_image_dir;
     std::uint16_t m_display_theme;
+    QColor m_nonrunner_background;
+    QColor m_nonrunner_foreground;
 
     QColor m_matched_price_colour[2];   // colour,text
     QColor m_active_colour[2];          // colour,text
