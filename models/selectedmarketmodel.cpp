@@ -13,6 +13,8 @@ SelectedMarketModel::SelectedMarketModel(QObject *parent,
       m_bf_market(my_market_ref),
       m_image_dir(image_dir),
       m_display_theme(disptheme),
+      m_nonrunner_background(m_display_theme == 0 ? betfair::utils::veryLightGrey1 : Qt::transparent),
+      m_nonrunner_foreground(betfair::utils::midgrey1),
       m_betting_enabled(false)
 {
 
@@ -193,7 +195,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                     std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
                     if (false == this_runner->isActive())
                     {
-                        return QBrush(betfair::utils::midgrey1);
+                        return QBrush(m_nonrunner_foreground);
                     }
                     else
                     {
@@ -235,7 +237,7 @@ QVariant SelectedMarketModel::data(const QModelIndex &index, int role) const
                     std::shared_ptr<betfair::TRunner> this_runner = runners[runner_index];
                     if (false == this_runner->isActive())
                     {
-                        return QBrush(betfair::utils::veryLightGrey1);
+                        return QBrush(m_nonrunner_background);
                     }
                     switch (col) {
                         case gridview::NAME:

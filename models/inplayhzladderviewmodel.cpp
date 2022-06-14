@@ -18,6 +18,8 @@ InPlayHZLadderModel::InPlayHZLadderModel(QObject *parent,
       m_lay_mode(true),
       m_image_dir(image_dir),
       m_display_theme(disptheme),
+      m_nonrunner_background(m_display_theme == 0 ? betfair::utils::veryLightGrey1 : Qt::transparent),
+      m_nonrunner_foreground(betfair::utils::midgrey1),
       m_matched_price_colour{betfair::utils::greenTwo,Qt::black},
       m_active_colour{betfair::utils::layOne,Qt::black},
       m_inactive_color{betfair::utils::midgrey1,Qt::black},         // colour,text
@@ -230,8 +232,8 @@ QVariant InPlayHZLadderModel::data(const QModelIndex &index, int role) const
                         break;
                     case Qt::ForegroundRole:
                         if (iphzladdview::NAME == col)
-                        {
-                            return QBrush(Qt::black);
+                        {                            
+                            return b_runner_active ? QBrush(Qt::black) : QBrush(m_nonrunner_foreground);
                         }
                         else if (iphzladdview::PROFIT == col)
                         {                            
@@ -253,7 +255,7 @@ QVariant InPlayHZLadderModel::data(const QModelIndex &index, int role) const
                         this_runner->getLatestIntervalData(imin,imax,lpm);
                         if (iphzladdview::NAME == col)
                         {
-                            return QBrush(Qt::white);
+                            return b_runner_active ? QBrush(Qt::white) : QBrush(m_nonrunner_background);
                         }
                         else if (iphzladdview::PROFIT == col)
                         {
@@ -328,6 +330,10 @@ QVariant InPlayHZLadderModel::data(const QModelIndex &index, int role) const
                                         return QBrush(m_active_colour[0]);
                                     }
                                 }
+                            }
+                            else
+                            {
+                                return QBrush(m_nonrunner_background);
                             }
                         }
                         break;

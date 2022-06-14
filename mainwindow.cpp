@@ -100,6 +100,8 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     my_inplay_gridview_stake_model(nullptr,8,m_display_theme),
     m_selected_market_update_timer(nullptr),
     m_update_bets_timer(nullptr),
+    m_bet_update_rate_ms(1000),
+    m_price_update_rate_ms(1000),
     m_bet_strategy_ref(""),
     m_timer_counter(0),
     m_wom_calculation_depth(5),
@@ -138,12 +140,9 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
         QDir().mkpath(m_images_path);
     }
 
-    // Force program settings dialogue to populate its members with data from the JSON config file and
-    // then populate our members accordingly
-    my_program_settings.importStartUpJSONSettings();
-    updateProgramSettings();
-
     ui->setupUi(this);
+    m_selected_market_update_timer = new QTimer(this);
+    m_update_bets_timer = new QTimer(this);
 
     my_ladder_1_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
     my_ladder_2_stake_model.changeBaseStake(betfair::utils::min_betting_stake);
@@ -155,12 +154,13 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     if (m_display_theme == 1)
     {
         my_program_settings.applyDefaultDarkTheme();
-
     }
 
+    // Force program settings dialogue to populate its members with data from the JSON config file and
+    // then populate our members accordingly
+    my_program_settings.importStartUpJSONSettings();
+    updateProgramSettings();
 
-    m_selected_market_update_timer = new QTimer(this);
-    m_update_bets_timer = new QTimer(this);
     ui->mainTabWidget->setCurrentIndex(0);
 
     my_ladder_util_layouts[0] = ui->ladder1UtilChartLayout;
@@ -233,10 +233,6 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     ui->selectecMarketView->horizontalHeader()->setStretchLastSection(true);
 
     connect(ui->selectecMarketView,SIGNAL(clicked(const QModelIndex&)),this,SLOT(onGridViewClick(const QModelIndex&)));
-
-
-    //initialiseLadderStakeComboBox(ui->cbGridStake);
-    //ui->cbGridStake->setCurrentIndex(0);
 
     ui->gridUnmatchedBetView->setModel(&my_market_unmatched_bets_model);
     ui->gridUnmatchedBetView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -431,7 +427,7 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     ui->inPlayGridBetView->show();
 
     ui->sbIPBetTickOffset->setValue(0);    
-    connect(ui->inPlayGridBetView,SIGNAL(clicked(const QModelIndex&)),this,SLOT(onIPViewClick(const QModelIndex&)));
+    connect(ui->inPlayGridBetView,SIGNAL(clicked(QModelIndex)),this,SLOT(onIPViewClick(QModelIndex)));
 
     // EVENT LOG TAB
     connect(ui->btnClearLog,SIGNAL(clicked()),this,SLOT(onClearEventLogClicked()));
@@ -439,9 +435,10 @@ MainWindow::MainWindow(const QJsonObject& json_settings,
     ui->selectecMarketView->show();
     my_runner_charts.reset();
 
+
     // START TIMERS
-    m_selected_market_update_timer->start(1000);
-    m_update_bets_timer->start(1000);
+    m_selected_market_update_timer->start(m_price_update_rate_ms);
+    m_update_bets_timer->start(m_bet_update_rate_ms);
 
     QIcon chart_icon(":/images/chart_icon1.png");
     ui->btnBringUpChartLadder1->setIcon(chart_icon);
@@ -819,7 +816,7 @@ void MainWindow::onUnmatchedBetsViewClick(const QModelIndex &index)
 }
 
 //====================================================================
-void MainWindow::onIPViewClick(const QModelIndex &index)
+void MainWindow::onIPViewClick(QModelIndex index)
 {
     if (false == m_inplayview_betting_enabled)
     {
@@ -2143,8 +2140,10 @@ void MainWindow::processLogin()
 //====================================================================
 void MainWindow::updateProgramSettings()
 {
-    m_selected_market_update_timer->setInterval(my_program_settings.getDataUpdateRateMillisec());
-    m_update_bets_timer->setInterval(my_program_settings.getBetUpdateRateMillisec());
+    m_bet_update_rate_ms = my_program_settings.getDataUpdateRateMillisec();
+    m_price_update_rate_ms = my_program_settings.getDataUpdateRateMillisec();
+    m_selected_market_update_timer->setInterval(m_price_update_rate_ms);
+    m_update_bets_timer->setInterval(m_bet_update_rate_ms);
     m_wom_calculation_depth = my_program_settings.getWOMCalcDepth();
     m_bet_persistence_flag = my_program_settings.getBetPersistenceFlag();
     m_gridview_betting_enabled = my_program_settings.getGridViewBettingEnabledFlag();
